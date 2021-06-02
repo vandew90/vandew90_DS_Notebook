@@ -1,0 +1,47 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+1. Import data procedure
+
+```{r}
+library(haven)
+mining <- read_sas("http://www.principlesofeconometrics.com/sas/mining.sas7bdat", 
+    NULL)
+```
+
+2. Wrangle the data
+
+```{r}
+
+library(dplyr)
+
+mining2 <- mining %>%
+ filter(!(YEAR %in% c("1972", "1973", "1974", "1975", "1976", "1977", "1978", 
+"1979"))) %>%
+ filter(QTR %in% "4") %>%
+ filter(PRO >= 100.4 & PRO <= 118.6) %>%
+ filter(POW >= 
+    67L & POW <= 105L)
+```
+
+3. ggplot2 data viz
+
+```{r}
+p <- ggplot(mining2) +
+ aes(x = PRO, y = POW) +
+ geom_point(size = 1L, colour = "#0c4c8a") +
+ theme_minimal()
+
+p
+
+```
+
+4. Plotly
+
+```{r}
+
+library(plotly)
+ggplotly(p)
+```
